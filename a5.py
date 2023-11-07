@@ -113,7 +113,19 @@ class Board:
         Returns:
             a tuple of row, column index identifying the most constrained cell
         """
-        pass
+        mini = self.size
+        pos = (0, 0)
+        for i in range(self.size):
+            for j in range(self.size):
+                # print(self.rows[i][j])
+                if isinstance(self.rows[i][j], list) and len(self.rows[i][j]) < mini:
+                    # print(self.rows[i][j])
+                    mini = len(self.rows[i][j])
+                    pos = (i, j)
+                    # print(mini)
+                    # print(pos)
+        return pos
+
 
     def failure_test(self) -> bool:
         """Check if we've failed to correctly fill out the puzzle. If we find a cell
@@ -123,7 +135,15 @@ class Board:
         Returns:
             True if we have failed to fill out the puzzle, False otherwise
         """
-        pass
+        # mcc = self.find_most_constrained_cell()
+        # if self.rows[mcc[0]][mcc[1]] == []:
+        #     return True
+        # return False
+        for row in self.rows:
+            for cell in row:
+                if not cell:
+                    return True
+        return False
 
     def goal_test(self) -> bool:
         """Check if we've completed the puzzle (if we've placed all the numbers).
@@ -191,15 +211,15 @@ def BFS(state: Board) -> Board:
 
 
 if __name__ == "__main__":
-    b = Board()
-    print(b)
-    b.print_pretty()
-    b.update(0, 0, 4)
-    b.update(2, 1, 7)
-    b.update(0, 5, 1)
-    b.update(7, 1, 8)
-    b.print_pretty()
-    print(b)
+    # b = Board()
+    # print(b)
+    # b.print_pretty()
+    # b.update(0, 0, 4)
+    # b.update(2, 1, 7)
+    # b.update(0, 5, 1)
+    # b.update(7, 1, 8)
+    # b.print_pretty()
+    # print(b)
     # uncomment the below lines once you've implemented the board class
    
     # # CODE BELOW HERE RUNS YOUR BFS/DFS
@@ -315,13 +335,19 @@ if __name__ == "__main__":
     # assert b.failure_test() == True, "failure test test 2"
     # print("All part 1 tests passed!")
 
-    # ##Now, let's write some quick tests to check update!
-    # #Create a sudoku board.
-    # g = Board()
-    # #Place the 28 assignments in first_moves on the board.
-    # for trip in first_moves:
-    #     g.update(trip[0],trip[1],trip[2])
-    # g.print_pretty()
+    ##Now, let's write some quick tests to check update!
+    #Create a sudoku board.
+    g = Board()
+    #Place the 28 assignments in first_moves on the board.
+    for trip in second_moves:
+        g.update(trip[0],trip[1],trip[2])
+    g.print_pretty()
+    print(g)
+    print(g.find_most_constrained_cell())
+    print(g.failure_test())
+    g.rows[6][3] = []
+    print(g.find_most_constrained_cell())
+    print(g.failure_test())
     # #From the above print statement, you can see which numbers
     # #  have been assigned to the board, and then create test
     # #  cases by looking at the board and listing what values are
