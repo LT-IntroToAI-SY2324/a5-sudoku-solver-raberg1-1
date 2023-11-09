@@ -192,7 +192,15 @@ def DFS(state: Board) -> Board:
     Returns:
         either None in the case of invalid input or a solved board
     """
-    pass
+    # Create a stack
+    # 1Add the initial state (root) to the <stack>
+    # 2Choose a node (curr) to examine from the <stack> (if there is nothing in <stack> - FAILURE)
+    # 3Is curr a goal state?
+    # If so, SOLUTION
+    # If not, continue
+    # 4Expand curr by applying all possible operations (add the new states to the <stack>)
+    # 5Go to step 2
+
 
 
 def BFS(state: Board) -> Board:
