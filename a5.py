@@ -193,14 +193,32 @@ def DFS(state: Board) -> Board:
         either None in the case of invalid input or a solved board
     """
     # Create a stack
+    the_stack = Stack([state])
+    # print(the_stack)
     # 1Add the initial state (root) to the <stack>
     # 2Choose a node (curr) to examine from the <stack> (if there is nothing in <stack> - FAILURE)
+    while not the_stack.is_empty():
+        print(the_stack)
+        curr = the_stack.pop()
+        # print(curr)
+        if curr.goal_test():
+            return curr
+        elif not curr.failure_test():
+            row, col = curr.find_most_constrained_cell()
+            sel = curr.rows[row][col]
+            for el in sel:
+                cpy = copy.deepcopy(curr) 
+                cpy.update(row, col, el)
+                print(row, col, el)
+                the_stack.push(cpy)
+        
     # 3Is curr a goal state?
     # If so, SOLUTION
     # If not, continue
     # 4Expand curr by applying all possible operations (add the new states to the <stack>)
     # 5Go to step 2
 
+    return None
 
 
 def BFS(state: Board) -> Board:
@@ -233,20 +251,20 @@ if __name__ == "__main__":
     # # CODE BELOW HERE RUNS YOUR BFS/DFS
     # print("<<<<<<<<<<<<<< Solving Sudoku >>>>>>>>>>>>>>")
 
-    # def test_dfs_or_bfs(use_dfs: bool, moves: List[Tuple[int, int, int]]) -> None:
-    #     b = Board()
-    #     # make initial moves to set up board
-    #     for move in moves:
-    #         b.update(*move)
+    def test_dfs_or_bfs(use_dfs: bool, moves: List[Tuple[int, int, int]]) -> None:
+        b = Board()
+        # make initial moves to set up board
+        for move in moves:
+            b.update(*move)
 
-    #     # print initial board
-    #     print("<<<<< Initial Board >>>>>")
-    #     b.print_pretty()
-    #     # solve board
-    #     solution = (DFS if use_dfs else BFS)(b)
-    #     # print solved board
-    #     print("<<<<< Solved Board >>>>>")
-    #     solution.print_pretty()
+        # print initial board
+        print("<<<<< Initial Board >>>>>")
+        b.print_pretty()
+        # solve board
+        solution = (DFS if use_dfs else BFS)(b)
+        # print solved board
+        print("<<<<< Solved Board >>>>>")
+        solution.print_pretty()
 
     # sets of moves for the different games
     first_moves = [
@@ -347,15 +365,17 @@ if __name__ == "__main__":
     #Create a sudoku board.
     g = Board()
     #Place the 28 assignments in first_moves on the board.
-    for trip in second_moves:
+    for trip in first_moves:
         g.update(trip[0],trip[1],trip[2])
     g.print_pretty()
     print(g)
-    print(g.find_most_constrained_cell())
-    print(g.failure_test())
-    g.rows[6][3] = []
-    print(g.find_most_constrained_cell())
-    print(g.failure_test())
+    sol = DFS(g)
+    sol.print_pretty()
+    # print(g.find_most_constrained_cell())
+    # print(g.failure_test())
+    # g.rows[6][3] = []
+    # print(g.find_most_constrained_cell())
+    # print(g.failure_test())
     # #From the above print statement, you can see which numbers
     # #  have been assigned to the board, and then create test
     # #  cases by looking at the board and listing what values are
